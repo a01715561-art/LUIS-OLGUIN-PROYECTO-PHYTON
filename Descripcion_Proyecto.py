@@ -36,16 +36,21 @@
 
    #solicitar los datos
 import math 
-salario= int(input ("ingresa salario semanal "))
-horas= int(input("ingresar horas horas normales al semana trabajadas "))
-extras= int(input("ingresar horas extras en el mes "))
+salario= int(input ("Ingresa salario semanal: "))
+horas= int(input("Ingresar horas horas normales al semana trabajadas: "))
+extras= int(input("Ingresar horas extras en el mes: "))
    #calcular cuanto ganas al mes 
 salarioMes= salario * 4 
-print(f"El salario mensual es de:{salarioMes}")
+print(f"El salario mensual es de: {salarioMes}")
 #dividir el sueldo mensual entre las horas trabajadas 
 horaPagada= salario / horas
-print(f"A la hora ganas:{horaPagada} ")
-horasExtra= horaPagada * extras
-horaExtraa= horasExtra * 2
-print(f"De horas extras ganas:{horaExtraa}")
-
+print(f"A la hora ganas: {horaPagada} ")
+def calcularHoras(extras, horaPagada):
+    if extras <= 9:
+     extrasPagadas= horaPagada * extras * 2
+    # despues de la novena hora son triples 
+    else:
+     extrasPagadas= (9 * horaPagada * 2) + ((extras -9) * horaPagada * 3)
+    return extrasPagadas
+extasPagadas = calcularHoras(extras, horaPagada)
+print(f"Pago horas extras al mes: {extasPagadas} ")
