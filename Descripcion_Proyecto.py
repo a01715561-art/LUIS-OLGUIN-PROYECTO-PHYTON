@@ -5,7 +5,6 @@
 # al mes y el porcentaje de impuestos que pagas, dependiendo de cuanto gana una persona el porcentaje de cuantos 
 # imouestos tiene que pagar es mayor, mi intencion es facilitar la duda y la investigada de 
 # cuanto deben de pagar y desglosando en que se van esos impuestos.
-
 # Entrada:
 # N = numero entero
 # N = numero entero
@@ -36,21 +35,30 @@
 
    #solicitar los datos
 import math 
-salario= int(input ("Ingresa salario semanal: "))
-horas= int(input("Ingresar horas horas normales al semana trabajadas: "))
-extras= int(input("Ingresar horas extras en el mes: "))
+
+while True:
+ salario= int(input ("Ingresa salario semanal: "))
+ horas= int(input("Ingresar horas horas normales al semana trabajadas: "))
+ extras= int(input("Ingresar horas extras en el mes: "))
    #calcular cuanto ganas al mes 
-salarioMes= salario * 4 
-print(f"El salario mensual es de: {salarioMes}")
-#dividir el sueldo mensual entre las horas trabajadas 
-horaPagada= salario / horas
-print(f"A la hora ganas: {horaPagada} ")
-def calcularHoras(extras, horaPagada):
+ salarioMes= salario * 4 
+ print(f"El salario mensual es de: {salarioMes}")
+ #dividir el sueldo mensual entre las horas trabajadas 
+ horaPagada= salario / horas
+ print(f"A la hora ganas: {horaPagada} ")
+ def calcularHoras(extras, horaPagada):
     if extras <= 9:
      extrasPagadas= horaPagada * extras * 2
     # despues de la novena hora son triples 
     else:
      extrasPagadas= (9 * horaPagada * 2) + ((extras -9) * horaPagada * 3)
     return extrasPagadas
-extasPagadas = calcularHoras(extras, horaPagada)
-print(f"Pago horas extras al mes: {extasPagadas} ")
+ 
+ extasPagadas = calcularHoras(extras, horaPagada)
+ print(f"Pago horas extras al mes: {extasPagadas} ")
+ totalMes = salarioMes + extasPagadas
+ print(f"El salario mensual con extras es: {totalMes}")
+ repetir = input("\n¿Quieres probar con otro salario? (s/n): ").strip().lower()
+ if repetir != 's':
+   print("Gracias por usar el programa.")
+   break
