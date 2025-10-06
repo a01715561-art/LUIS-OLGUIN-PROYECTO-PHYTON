@@ -36,29 +36,39 @@
    #solicitar los datos
 import math 
 
-while True:
- salario= int(input ("Ingresa salario semanal: "))
- horas= int(input("Ingresar horas horas normales al semana trabajadas: "))
- extras= int(input("Ingresar horas extras en el mes: "))
-   #calcular cuanto ganas al mes 
- salarioMes= salario * 4 
- print(f"El salario mensual es de: {salarioMes}")
- #dividir el sueldo mensual entre las horas trabajadas 
- horaPagada= salario / horas
- print(f"A la hora ganas: {horaPagada} ")
- def calcularHoras(extras, horaPagada):
-    if extras <= 9:
-     extrasPagadas= horaPagada * extras * 2
-    # despues de la novena hora son triples 
+def calcularHoras(extras, horaPagada) :
+    if extras <= 9 :
+        extrasPagadas = horaPagada * extras * 2
     else:
-     extrasPagadas= (9 * horaPagada * 2) + ((extras -9) * horaPagada * 3)
-    return extrasPagadas
- 
- extasPagadas = calcularHoras(extras, horaPagada)
- print(f"Pago horas extras al mes: {extasPagadas} ")
- totalMes = salarioMes + extasPagadas
- print(f"El salario mensual con extras es: {totalMes}")
- repetir = input("\n¿Quieres probar con otro salario? (s/n): ").strip().lower()
- if repetir != 's':
-   print("Gracias por usar el programa.")
-   break
+        extrasPagadas = (9 * horaPagada * 2) + ((extras - 9) * horaPagada * 3)
+
+        return extrasPagadas
+    
+salarios = []
+horasNormales = []
+horasExtras = []
+salariosAlMes = []
+extrasPagadas = []
+
+empleados = int(input("Cuantos empleadops vas a ingresar? "))
+
+for i in range(empleados) :
+    print(f"\n --- EMPLEADO {i + 1} --- ")
+    salario = int(input("Ingresa salario semanal: "))
+    horas = int(input("Ingresa horas normales trabajadas a la semana: "))
+    extras = int(input("Ingresa horeas extra trabajadas en el mes: "))
+
+    salarios.append(salario)
+    horasNormales.append(horas)
+    horasExtras.append(extras)
+
+    salarioMes = salario * 4
+    horaPagada = salario / horas
+    extraPagada = calcularHoras(extras, horaPagada)
+
+    salariosAlMes.append(salarioMes)
+    extrasPagadas.append(extraPagada)
+
+    print(f"El salario munsual es de: {salarioMes}")
+    print(f"A la hora ganas: {horaPagada}")
+    print(f"Pago horas extra al mes: {extrasPagadas}")
