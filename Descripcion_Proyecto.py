@@ -33,42 +33,77 @@
 # N = numero decimal
 # N = numero decimal
 
-   #solicitar los datos
-import math 
+  
+import math
 
-def calcularHoras(extras, horaPagada) :
-    if extras <= 9 :
-        extrasPagadas = horaPagada * extras * 2
+
+def calcular_horas_extras(extras, hora_pagada):
+    if extras <= 9:
+        extras_pagadas = hora_pagada * extras * 2
     else:
-        extrasPagadas = (9 * horaPagada * 2) + ((extras - 9) * horaPagada * 3)
+        extras_pagadas = (9 * hora_pagada * 2) + ((extras - 9) * hora_pagada * 3)
+    return extras_pagadas 
 
-        return extrasPagadas
-    
-salarios = []
-horasNormales = []
-horasExtras = []
-salariosAlMes = []
-extrasPagadas = []
+TABLA_ISR_MENSUAL_2025 = [
+    (0.01,        746.04,       0.00,      0.0192),
+    (746.05,      6332.05,     14.32,      0.0640),
+    (6332.06,     11128.01,   371.83,      0.1088),
+    (11128.02,    12935.82,   893.63,      0.1600),
+    (12935.83,    15487.71,  1182.88,      0.1792),
+    (15487.72,    31236.49,  1640.18,      0.2136),
+    (31236.50,    49233.00,  5004.12,      0.2352),
+    (49233.01,    93993.90,  9236.89,      0.3000),
+    (93993.91,   125325.20, 22665.17,      0.3200),
+    (125325.21,  375975.61, 32691.18,      0.3400),
+    (375975.62,        float("inf"), 117912.32, 0.3500),
+]
 
-empleados = int(input("Cuantos empleadops vas a ingresar? "))
+def calcular_isr_mensual(base_gravable):
+    if base_gravable <= 0:
+        return 0.0
+    for lim_inf, lim_sup, cuota_fija, tasa in TABLA_ISR_MENSUAL_2025:
+        if lim_inf <= base_gravable <= lim_sup:
+            excedente = base_gravable - lim_inf
+            return cuota_fija + excedente * tasa
 
-for i in range(empleados) :
+    lim_inf, _, cuota_fija, tasa = TABLA_ISR_MENSUAL_2025[-1]
+    return cuota_fija + (base_gravable - lim_inf) * tasa
+
+salarios_semanales = []
+horas_normales_semana = []
+horas_extras_mes = []
+salarios_mensuales = []
+extras_pagadas_mes = []
+isr_mensual = []
+neto_mensual = []
+
+empleados = int(input("¿Cuántos empleados vas a ingresar? "))
+
+for i in range(empleados):
     print(f"\n --- EMPLEADO {i + 1} --- ")
-    salario = int(input("Ingresa salario semanal: "))
-    horas = int(input("Ingresa horas normales trabajadas a la semana: "))
-    extras = int(input("Ingresa horeas extra trabajadas en el mes: "))
+    salario_sem = float(input("Ingresa salario semanal: "))
+    horas_sem = float(input("Ingresa horas normales trabajadas a la semana: "))
+    extras_mes = float(input("Ingresa horas extra trabajadas en el mes: "))
 
-    salarios.append(salario)
-    horasNormales.append(horas)
-    horasExtras.append(extras)
+    salarios_semanales.append(salario_sem)
+    horas_normales_semana.append(horas_sem)
+    horas_extras_mes.append(extras_mes)
 
-    salarioMes = salario * 4
-    horaPagada = salario / horas
-    extraPagada = calcularHoras(extras, horaPagada)
+    salario_mes = salario_sem * 4
+    hora_pagada = salario_sem / horas_sem if horas_sem > 0 else 0.0
+    pago_extras = calcular_horas_extras(extras_mes, hora_pagada)
 
-    salariosAlMes.append(salarioMes)
-    extrasPagadas.append(extraPagada)
+    base_isr = salario_mes + pago_extras
+    isr = calcular_isr_mensual(base_isr)
+    neto = base_isr - isr
 
-    print(f"El salario munsual es de: {salarioMes}")
-    print(f"A la hora ganas: {horaPagada}")
-    print(f"Pago horas extra al mes: {extrasPagadas}")
+    salarios_mensuales.append(salario_mes)
+    extras_pagadas_mes.append(pago_extras)
+    isr_mensual.append(isr)
+    neto_mensual.append(neto)
+
+    print(f"Salario mensual: ${salario_mes:,.2f}")
+    print(f"Paga por hora: ${hora_pagada:,.2f}")
+    print(f"Pago horas extra (mes): ${pago_extras:,.2f}")
+    print(f"ISR mensual calculado: ${isr:,.2f}")
+    print(f"Total neto mensual (después de ISR): ${neto:,.2f}")
