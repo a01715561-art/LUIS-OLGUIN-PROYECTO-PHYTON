@@ -33,7 +33,7 @@
 # N = numero decimal
 # N = numero decimal
 
-  
+
 import math
 
 
@@ -42,7 +42,8 @@ def calcular_horas_extras(extras, hora_pagada):
         extras_pagadas = hora_pagada * extras * 2
     else:
         extras_pagadas = (9 * hora_pagada * 2) + ((extras - 9) * hora_pagada * 3)
-    return extras_pagadas 
+    return extras_pagadas
+
 
 TABLA_ISR_MENSUAL_2025 = [
     (0.01,        746.04,       0.00,      0.0192),
@@ -58,6 +59,7 @@ TABLA_ISR_MENSUAL_2025 = [
     (375975.62,        float("inf"), 117912.32, 0.3500),
 ]
 
+
 def calcular_isr_mensual(base_gravable):
     if base_gravable <= 0:
         return 0.0
@@ -65,9 +67,9 @@ def calcular_isr_mensual(base_gravable):
         if lim_inf <= base_gravable <= lim_sup:
             excedente = base_gravable - lim_inf
             return cuota_fija + excedente * tasa
-
     lim_inf, _, cuota_fija, tasa = TABLA_ISR_MENSUAL_2025[-1]
     return cuota_fija + (base_gravable - lim_inf) * tasa
+
 
 salarios_semanales = []
 horas_normales_semana = []
@@ -107,3 +109,17 @@ for i in range(empleados):
     print(f"Pago horas extra (mes): ${pago_extras:,.2f}")
     print(f"ISR mensual calculado: ${isr:,.2f}")
     print(f"Total neto mensual (después de ISR): ${neto:,.2f}")
+
+print("\n" + "="*70)
+print("RESUMEN GENERAL DE EMPLEADOS")
+print("="*70)
+print(f"{'Empleado':<10}{'Salario Mensual':>18}{'Extras Pagadas':>18}{'ISR':>12}{'Neto Mensual':>18}")
+print("-"*70)
+
+for i in range(empleados):
+    print(f"{i+1:<10}{salarios_mensuales[i]:>18,.2f}{extras_pagadas_mes[i]:>18,.2f}{isr_mensual[i]:>12,.2f}{neto_mensual[i]:>18,.2f}")
+
+print("-"*70)
+promedio_neto = sum(neto_mensual)/len(neto_mensual) if empleados > 0 else 0
+print(f"{'Promedio Neto Mensual':<40}${promedio_neto:,.2f}")
+print("="*70)
